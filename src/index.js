@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate } = require('uuid');
 
 const app = express();
 app.use(express.json());
@@ -45,7 +45,7 @@ function checksTodoExists(request, response, next) {
 		return response.status(404).json({ error: "User not found!" });
 	};
 
-	if(!typeof id === uuidv4) {
+	if(!validate(id)) {
 		return response.status(400).json({ error: "Id is not an uuidv4!" });
 	};
 
@@ -56,7 +56,7 @@ function checksTodoExists(request, response, next) {
 	};
 
 	request.user = user;
-	request.todo = user.todo;
+	request.todo = checkid;
 
 	return next();
 }
